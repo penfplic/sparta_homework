@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>숙제 | 원페이지 쇼핑몰</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <style>
+        .title {
+            font-size: xx-large;
+            font-weight: normal;
+            font-family: 'Black Han Sans', sans-serif;
+            color: darkcyan;
+        }
+
+        .text {
+            font-size: small;
+            font-weight: normal;
+            font-family: 'Black Han Sans', sans-serif;
+            color: black;
+            margin: auto 20px;
+        }
+
+        .description {
+            font-size: large;
+            font-weight: lighter;
+            font-family: 'Black Han Sans', sans-serif;
+            color: black;
+
+        }
+
+        .wrap {
+            width: 700px;
+            margin: auto;
+        }
+
+        .image-control {
+            border-style: solid;
+            border-radius: unset;
+            background-size: cover;
+            width: fit-content;
+            height: fit-content;
+            margin: auto;
+        }
+        .exchangeDescription{
+            font-size: large;
+            font-weight: lighter;
+            font-family: 'Black Han Sans', sans-serif;
+            color: blue;
+        }
+
+        table {
+            border: 1px solid;
+            border-collapse: collapse;
+            font-size: large;
+            font-weight: lighter;
+            font-family: 'Black Han Sans', sans-serif;
+            color: black;
+        }
+
+        td,
+        th {
+            padding: 10px;
+            border: 1px solid;
+        }
+    </style>
+
+    <script>
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "https://api.manana.kr/exchange/rate.json",
+                data: {},
+                success:function (response){
+                    $('#exchange').empty()
+                    let exchangeRate=response[1]['rate'];
+                    let exchangeTemp=`달러-원 환율:${exchangeRate}`
+                    $('#exchange').append(exchangeTemp);
+                }
+
+            })
+        });
+
+        function sayOkay() {
+            let userEmail = $('#emailForAlert').val();
+            let userCount = $('#inputGroupSelect01').val();
+            let userName = $('#nameForAlert').val();
+            let userAddress = $('#addressForAlert').val();
+            let userPhonenum = $('#phonenumForAlert').val();
+
+            if ((userEmail !== '')&&(userEmail.includes('@'))) {
+                if (userCount !== 'Choose...') {
+                    if (userName !== '') {
+                        if (userAddress !== '') {
+                            if (userPhonenum !== '') {
+                                alert('주문이 완료되었습니다.')
+
+                                let temp = `<tr>
+                                                <td>${userEmail}</td>
+                                                <td>${userCount}</td>
+                                                <td>${userName}</td>
+                                                <td>${userAddress}</td>
+                                                <td>${userPhonenum}</td>
+                                            </tr>`;
+
+                                $('#userInfo').append(temp);
+                            } else {
+                                alert('전화번호를 입력해주십시오.')
+                            }
+                        } else {
+                            alert('주소를 입력해주십시오.')
+                        }
+                    } else {
+                        alert('성함을 입력해주십시오.')
+                    }
+                } else {
+                    alert('수량을 선택해주십시오.')
+                }
+            } else {
+                alert('올바른 email 형식으로 입력해주십시오.\n ex.email@gmail.com')
+            }
+
+        }
+
+    </script>
+</head>
+<body>
+<div class="wrap">
+    <div class="image-control"><img
+            src="https://duducase.com/web/product/big/20200418/47542a49da9774cc1a357a5e4c74acf4.jpg" alt=""></div>
+    <p>
+    <div class="title">페페 케이스<span class="text">가격:1,000,000원 / 개</span></div>
+    <h5 class="description">이 제품은 좋습니다.</h5>
+    </p>
+    <p id="exchange" class="exchangeDescription"></p>
+    <p>
+    <div class="title">주문하기</div>
+    </p>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">@</span>
+        </div>
+        <input type="text" class="form-control" id="emailForAlert" placeholder="Username" aria-label="Username"
+               aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">수량</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon2">성함</span>
+        </div>
+        <input type="text" class="form-control" id="nameForAlert" placeholder="Username" aria-label="Username"
+               aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3">주소</span>
+        </div>
+        <input type="text" class="form-control" id="addressForAlert" placeholder="Username" aria-label="Username"
+               aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon4">전화번호</span>
+        </div>
+        <input type="text" class="form-control" id="phonenumForAlert" placeholder="Username" aria-label="Username"
+               aria-describedby="basic-addon1">
+    </div>
+    <p>
+        <button onclick="sayOkay()" type="button" class="btn btn-success">주문하기</button>
+    </p>
+    <table>
+        <thead>
+        <tr>
+            <td>이메일</td>
+            <td>이름</td>
+            <td>수량</td>
+            <td>주소</td>
+            <td>전화번호</td>
+        </tr>
+        </thead>
+
+        <tbody id="userInfo">
+        </tbody>
+    </table>
+</div>
+</div>
+</body>
+</html>
